@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+{% extends "index.html" %}
+{% load static %}
+
+{% block main_content %}
+<div class="container mt-4"> <!-- Mengurangi margin atas -->
+    <div class="text-center">
+        <h3 class="fw-bold mb-3">List Pengunjung</h3> <!-- Mengurangi margin bawah -->
+        <nav class="navbar bg-body-light justify-content-center">
+            <form class="d-flex" role="search" action="/readers" method="POST">
+                {% csrf_token %}
+                <input class="form-control me-2" type="search" name="query" placeholder="Search" aria-label="Search" value="{{ query }}">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </nav>
+        <p class="mt-3 text-dark">{{readers|length}} Daftar Pengunjung</p>
+    </div>
+</div>
+
+<div class="container-fluid d-flex justify-content-center align-items-center mt-5">
+    <div class="col-md-10">
+        <a href="/add_readers" ><button class="btn btn-success" id="del" style="margin-bottom: 5px;">Daftar</button></a>
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID Pengunjung</th>
+        <th>Nama</th>
+        <th>NIM</th>
+        <th>Kontak</th>
+        <th>Alamat</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for reader in readers%}
+      <tr>
+        <td scope="row">{{reader.id}}</td>
+        <td>{{reader.reader_name}}</td>
+        <td>{{reader.reference_id}}</td>
+        <td>{{reader.reader_contact}}</td>
+        <td>{{reader.reader_address}}</td>
+        <td><a href="update_readers_tab/{{reader.id}}" ><button class="btn btn-primary" id="del" style="margin-right: 5px;">Edit</button></a><a href="delete/{{reader.id}}" ><button class="btn btn-danger" id="del">delete</button></a></td>
+      </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+{% extends "index.html" %}
+{% load static %}
+
+{% block main_content %}
+
+<div class="jumbotron">
+    <div class="container">
+        <img src="{% static '/logo-ubg.png' %}" alt="LIMS" class="rounded float-start" height="200" style="margin-right: 20px;">
+        <h1 class="display-4">Hello, Admin!</h1>
+        <p style="color: black; ">Welcome to our jurney. Let's make Library more interested</p>
+        <p><a role="button" href="#" class="btn btn-primary btn-lg">Browser our University</a></p>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+      <div class="col">
+        <h2>Why reading is important?</h2>
+        <p style="color: black;">Reading is good for you because it improves your focus, memory, empathy, and communication skills. It can reduce stress, improve your mental health, and help you live longer. Reading also allows you to learn new things to help you succeed in your work and relationships.</p>
+      </div>
+      <div class="col">
+        <h2>Key Benefits</h2>
+        <ul>
+            <li>Increase your vocabulary and comprehension skills</li>
+            <li>Reduce Stress</li>
+            <li>Improve mental health</li>
+            <li>Prevents Cognitive decline</li>
+        </ul>
+      </div>
+      <div class="col">
+        <h2>Though for the day!</h2>
+        <p style="color: black;">"There is a saying that books are a window to the world. In each book, there are many new things that can be learned at any time."</p>
+      </div>
+    </div>
+    <hr>
+  </div>
+</main>
+<footer class="container">
+    <p style="color: black;">&copy; 2024 Universitas Bumigora. All rights reserved.</p>
+</footer>
+
+{% endblock %}
