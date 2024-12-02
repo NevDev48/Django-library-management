@@ -3,9 +3,9 @@
 {% load static %}
 
 {% block main_content %}
-<div class="container mt-4"> <!-- Mengurangi margin atas -->
+<div class="container mt-4"> 
     <div class="text-center">
-        <h3 class="fw-bold mb-3">List Pengunjung</h3> <!-- Mengurangi margin bawah -->
+        <h3 class="fw-bold mb-3">List Pengunjung</h3> 
         <nav class="navbar bg-body-light justify-content-center">
             <form class="d-flex" role="search" action="/readers" method="POST">
                 {% csrf_token %}
@@ -32,7 +32,7 @@
       </tr>
     </thead>
     <tbody>
-        {% for reader in readers%}
+        {% for reader in readers %}
       <tr>
         <td scope="row">{{reader.id}}</td>
         <td>{{reader.reader_name}}</td>

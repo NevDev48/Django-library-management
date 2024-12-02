@@ -3,7 +3,56 @@
 {% load static %}
 
 {% block main_content %}
+<div class="container mt-4"> 
+    <div class="text-center">
+        <h3 class="fw-bold mb-3">List Buku</h3> 
+        <nav class="navbar bg-body-light justify-content-center">
+            <form class="d-flex" role="search" action="/books" method="POST">
+                {% csrf_token %}
+                <input class="form-control me-2" type="search" name="query1" placeholder="Search" aria-label="Search" value="{{ query1 }}">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>            
+        </nav>
+        <p class="mt-3 text-dark">{{books|length}} Jumlah Buku</p>
+    </div>
+</div>
 
-<h1>GABERES</h1>
+<div class="container-fluid d-flex justify-content-center align-items-center mt-5">
+    <div class="col-md-10">
+        <a href="/add_books" ><button class="btn btn-success" id="del" style="margin-bottom: 5px;">Tambah Buku</button></a>
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Gambar</th>
+        <th>ID Buku</th>
+        <th>Judul</th>
+        <th>Kategori</th>
+        <th>Penulis</th>
+        <th>Rilis</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for Book_lib in books %}
+      <tr>
+        <td scope="row">
+    {% if Book_lib.image %}
+        <img src="{{ Book_lib.image.url }}" alt="{{ Book_lib.title }}" width="100" class="img-thumbnail">
+    {% else %}
+        <p>Tidak ada gambar</p>
+    {% endif %}
+        </td>
+        <td>{{Book_lib.id}}</td>
+        <td>{{Book_lib.title}}</td>
+        <td>{{Book_lib.category}}</td>
+        <td>{{Book_lib.author}}</td>
+        <td>{{Book_lib.publication_date}}</td>
+        <td><a href="update_books_tab/{{Book_lib.id}}" ><button class="btn btn-primary" id="del" style="margin-right: 5px;">Edit</button></a><a href="delete_book/{{Book_lib.id}}" ><button class="btn btn-danger" id="del">delete</button></a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+</div>
 
 {% endblock %}

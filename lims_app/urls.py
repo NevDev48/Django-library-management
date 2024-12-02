@@ -2,6 +2,8 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
+    path('loginAuthPage', loginAuthPage, name='loginAuthPage'),
+    path('logout/', logout_view, name='logout'),
     path('home', home, name='home'),  # Tambahkan name='home'
 
     #reader tab
@@ -12,5 +14,13 @@ urlpatterns = [
     path('delete/<int:id>/',delete_reader,name="delete"),
 
     #books tab
-    path('books', books, name='books'),
+    path('books', books_tab, name='books'),
+    path('add_books', add_books_tab, name="add_books"),
+    path('save_books', save_books, name="save_books"),
+    path('update_books_tab/<int:id>/', update_books_tab, name="update_books_tab"),
+    path('update_books/<int:id>/', update_books, name='update_books'),
+    path('delete_book/<int:id>/', delete_book, name='delete_book'),
+
+    #jurnal tab
+    path('jurnal', jurnal_tab, name='jurnal')
 ]
