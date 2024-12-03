@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import redirect
-from .models import Category, reader, Book_lib
+from .models import Category, reader, Book_lib, jurnal
 
 # Login page
 def loginAuthPage(request):
@@ -116,10 +116,10 @@ def update_reader(request, id):
 # Books views that require login
 @login_required(login_url='loginAuthPage')
 def books_tab(request):
-    query1 = ''  # Initialize query1 to avoid error
+    query1 = ''  
     if request.method == "GET":
         books = Book_lib.objects.all()
-    else:  # Handle POST request (search data)
+    else: 
         query1 = request.POST.get('query1', '')
         if query1:
             books = Book_lib.objects.filter(title__icontains=query1)
@@ -184,5 +184,28 @@ def delete_book(request, id):
 
 
 #jurnal page
+from django.shortcuts import render, redirect
+from .models import jurnal
+
 def jurnal_tab(request):
-    return render(request, 'jurnal.html', context={'current_tab': 'jurnal'})
+    if request.method == "GET":
+        jurnals = jurnal.objects.all()
+    return render(request, 'jurnal.html', {'current_tab': 'jurnal', 'jurnals': jurnals})
+
+def save_jurnal(request):
+    if request.method == "POST":
+        judul = request.POST['judul']
+        dokumen = request.FILES.get('dokumen')
+
+        # Simpan data jurnal ke database
+        jurnal_item = jurnal(
+            judul=judul,
+            dokumen=dokumen,
+        )
+        jurnal_item.save()
+        return redirect('/jurnal')
+    
+def delete_jurnal(request, jurnal_id):
+    jurnal_item = get_object_or_404(jurnal, id=jurnal_id)
+    jurnal_item.delete()
+    return redirect('/jurnal')

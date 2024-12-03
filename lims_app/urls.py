@@ -22,5 +22,7 @@ urlpatterns = [
     path('delete_book/<int:id>/', delete_book, name='delete_book'),
 
     #jurnal tab
-    path('jurnal', jurnal_tab, name='jurnal')
+    path('jurnal', jurnal_tab, name='jurnal'),
+    path('jurnal/save/', save_jurnal, name='save_jurnal'),
+    path('delete_jurnal/<int:jurnal_id>/', delete_jurnal, name='delete_jurnal'),
 ]

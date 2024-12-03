@@ -18,12 +18,12 @@
 </div>
 
 <div class="container-fluid d-flex justify-content-center align-items-center mt-5">
-    <form action="">
+    <form action="{% url 'save_jurnal' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <label for="" class="form-label">Upload File:</label>
-        <input type="file">
+        <label for="dokumen" class="form-label">Upload File:</label>
+        <input type="file" id="dokumen" name="dokumen" required>
         <label for="" class="form-label">Judul:</label>
-        <input type="text">
+        <input type="text" id="judul" name="judul" required>
         <div class="d-gird">
         <button class="btn btn-success mt-3" type="submit">Upload</button>
         </div>
@@ -41,12 +41,22 @@
       </tr>
     </thead>
     <tbody>
+      {% for jurnal in jurnals %}
       <tr>
-        <td scope="row"></td>
-        <td></td>
-        <td><a href="" ><button class="btn btn-primary" id="del" style="margin-right: 5px;">Edit</button></a><a href="" ><button class="btn btn-danger" id="del">delete</button></a></td>
+        <td scope="row">
+          {% if jurnal.dokumen %}
+                    <a href="{{ jurnal.dokumen.url }}" download class="btn btn-primary">
+                        Download Dokumen
+                    </a>
+                {% else %}
+                    -
+                {% endif %}
+        </td>
+        <td>{{jurnal.judul}}</td>
+        <td><a href="delete_jurnal/{{jurnal.id}}" ><button class="btn btn-danger" id="del">delete</button></a></td>
       </tr>
     </tbody>
+    {% endfor %}
   </table>
 </div>
 </div>

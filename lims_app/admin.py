@@ -6,3 +6,4 @@ from .models import *
 admin.site.register(reader)
 admin.site.register(Category)
 admin.site.register(Book_lib)
+admin.site.register(jurnal)
