@@ -1,0 +1,148 @@
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    justify-content: center;
+}
+
+html{
+    scroll-behavior: smooth;
+}
+
+.background-img{
+    position: relative;
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.home{
+    text-align: center;
+    padding: 200px;
+    color: rgb(255, 255, 255);
+}
+.home h1{
+    font-weight: 700;
+    font-style: normal;
+    font-family: 'Segoe UI';
+    font-size: 50px;
+    line-height: 106px;
+    border-radius: 5px;
+}
+.home h6{
+    font-family: 'Segoe UI';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 28px;
+}
+.button{
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #DFAA5B;
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: bold;
+    width: 371px;
+    align-items: center;
+    font-size: 16px;
+    border-radius: 4px;
+}
+.box{
+    position: relative;
+    text-align: center;
+    background-color: white;
+    border-radius: 10px;
+    margin-top: -100px;
+    margin-left: 12.7%;
+    box-sizing: border-box;
+    border-radius: 10px;
+    width: 75%;
+    align-items: center;
+    z-index: 999;
+    box-shadow: 0 3 4 0 black;
+}
+
+.box h1{
+    margin-top: 2px;
+}
+
+.box ul li{
+    display: inline-block;
+    align-items: center;
+    padding: 40px;
+}
+
+main {
+    align-items: center;
+    justify-content: center;
+    position: center;
+}
+
+.h1-hr{
+    text-align: center;
+    margin-top: 50px;
+    color: #0f0e0c;
+    font-weight: bold;
+}
+
+
+h3{
+    color: aliceblue;
+}
+
+.fr{
+    display: flex;
+    text-align: justify;
+    padding: 30px;
+}
+.fr img {
+    margin-right: 200px;
+}
+
+/* Gaya Responsif */
+@media screen and (max-width: 768px) {
+  header {
+    padding: 10px;
+  }
+  nav ul li {
+    display: block;
+    margin-bottom: 10px;
+  }
+  .home {
+    padding: 100px;
+  }
+  .box {
+    width: 90%;
+    margin-left: 5%;
+  }
+  .container {
+    flex-direction: column;
+  }
+  .box-room {
+    width: 90%;
+    margin: 50px auto;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .home h1 {
+    font-size: 30px;
+    line-height: 60px;
+  }
+  .home h6 {
+    font-size: 16px;
+    line-height: 20px;
+  }
+  .button {
+    width: 250px;
+  }
+  .box-room {
+    margin: 30px auto;
+    font-size: 24px;
+  }
+}

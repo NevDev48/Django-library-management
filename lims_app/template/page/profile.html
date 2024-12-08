@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="id">
+{% load static %}
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profil Pengunjung</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+        background-color: rgb(41, 40, 40);
+        color: #fff;
+    }
+    .profile-card {
+      border: 1px solid #ddd;
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      max-width: 350px;
+      margin: 20px auto;
+      color: black;
+    }
+    .profile-card .profile-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .profile-card .profile-header img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+    .profile-card .profile-header h3 {
+      margin: 10px 0;
+    }
+    .profile-card .profile-details {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .profile-card .profile-details li {
+      margin-bottom: 10px;
+    }
+    .profile-card .profile-details li strong {
+      width: 100px;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <div class="container mt-5">
+    <div class="profile-card">
+      <div class="profile-header">
+        <h3>{{ current_user.reader_name }}</h3>
+        <p>ID Pengunjung: {{ current_user.id }}</p>
+      </div>
+      <ul class="profile-details">
+        <li><strong>NIM:</strong> {{ current_user.reference_id }}</li>
+        <li><strong>Kontak:</strong> {{ current_user.reader_contact }}</li>
+        <li><strong>Alamat:</strong> {{ current_user.reader_address }}</li>
+        <li>
+            <a href="{% url 'password' reader_id=current_user.id %}" class="btn btn-primary">Change Password</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

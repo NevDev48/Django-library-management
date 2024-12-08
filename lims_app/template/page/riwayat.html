@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-5">Riwayat Pinjam Buku</h1>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <img src="{% static 'images/book1.jpg' %}" class="card-img-top" alt="Book Cover">
+                <div class="card-body">
+                    <h5 class="card-title">Judul:</h5>
+                    <p class="card-text">ID BUku: </p>
+                    <p class="card-text">Penulis: </p>
+                    <p class="card-text">Category: </p>
+                    <p class="card-text">Tahun Terbit: </p>
+                    <p class="card-text text-center fw-bold text-danger">DIKEMBALIKAN MAKSIMAL SETELAH 30 HARI PEMINJAMAN!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

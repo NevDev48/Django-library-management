@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.hashers import make_password
 
 # Create your models here.
 
@@ -6,10 +7,13 @@ class reader(models.Model):
     def __str__(self):
         return self.reader_name
     reference_id=models.CharField(max_length=200)
+    password = models.CharField(max_length=200, default="")
     reader_name=models.CharField(max_length=200)
     reader_contact=models.CharField(max_length=200)
     reader_address=models.TextField()
     active=models.BooleanField(default=True)
+    def set_password(self, raw_password):
+        self.password = make_password(raw_password)
 
 class Category(models.Model):
     def __str__(self):

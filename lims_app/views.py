@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import make_password, check_password
 from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import redirect
@@ -57,13 +58,18 @@ def add_readers_tab(request):
         # Get data from the form
         reference_id = request.POST.get('reader_nim')
         reader_name = request.POST.get('reader_name')
+        raw_password = request.POST.get('password')  # Ambil password mentah
         reader_contact = request.POST.get('reader_contact')
         reader_address = request.POST.get('address')
+        
+        # Hash password
+        hashed_password = make_password(raw_password)
         
         # Save data to the database
         reader_item = reader(
             reference_id=reference_id,
             reader_name=reader_name,
+            password=hashed_password,
             reader_contact=reader_contact,
             reader_address=reader_address,
             active=True  # Default True as per model
@@ -80,6 +86,7 @@ def save_reader(request):
     reader_item = reader(
         reference_id=request.POST['reader_nim'],
         reader_name=request.POST['reader_name'],
+        password=request.POST['password'],
         reader_contact=request.POST['reader_contact'],
         reader_address=request.POST['address'],
         active=True,
@@ -209,3 +216,119 @@ def delete_jurnal(request, jurnal_id):
     jurnal_item = get_object_or_404(jurnal, id=jurnal_id)
     jurnal_item.delete()
     return redirect('/jurnal')
+
+
+#INI PAGE LAIN
+def loginPage(request):
+    if request.method == 'POST':
+        reference_id = request.POST.get('reference_id')
+        password = request.POST.get('password')
+
+        try:
+            # Check if reference_id exists
+            user = reader.objects.get(reference_id=reference_id)
+            
+            # Verify if the password matches
+            if check_password(password, user.password):
+                # Store user info in session
+                request.session['reference_id'] = user.reference_id
+                request.session['reader_name'] = user.reader_name 
+
+                # Debugging
+                print(f"Session created: {request.session['reference_id']} - {request.session['reader_name']}")
+                return redirect('beranda')  # Redirect ke beranda
+            else:
+                messages.error(request, 'Password salah. Silakan coba lagi.')
+        except reader.DoesNotExist:
+            messages.error(request, 'Reference ID tidak ditemukan.')
+
+    return render(request, "page/login.html")
+
+
+def logoutPage(request):
+    request.session.flush()  # Hapus semua data di session
+    return redirect('login')
+
+@login_required(login_url='login')
+def beranda(request):
+    reference_id = request.session.get('reference_id', None)
+    if not reference_id:
+        print("Session not found, redirecting to login.")
+        return redirect('login')  # Jika session hilang, redirect ke login
+    
+    current_user = None
+    try:
+        current_user = reader.objects.get(reference_id=reference_id)
+    except reader.DoesNotExist:
+        current_user = None
+
+    jurnals = jurnal.objects.all()
+    books = Book_lib.objects.all()
+    readers = reader.objects.all()
+
+    return render(request, "page/beranda.html", {
+        'current_tab': 'beranda',
+        'jurnals': jurnals,
+        'books': books,
+        'readers': readers,
+        'current_user': current_user
+    })
+
+
+@login_required(login_url='login')
+def jurnal_page(request):
+    if request.method == "GET":
+        jurnals = jurnal.objects.all()
+
+
+    return render(request, "page/jurnal_page.html", {'current_tab': 'jurnal_page', 'jurnals': jurnals})
+
+@login_required(login_url='login')
+def buku(request):
+    if request.method == "GET":
+        books = Book_lib.objects.all()
+    return render(request, "page/buku.html", {'current_tab': 'buku', "books": books})
+
+@login_required(login_url='login')
+def riwayat(request):
+    return render(request, "page/riwayat.html", {'current_tab': 'riwayat'})
+
+def profil(request):
+    reference_id = request.session.get('reference_id', None)
+    current_user = None
+    if reference_id:
+        try:
+            current_user = reader.objects.get(reference_id=reference_id)
+        except reader.DoesNotExist:
+            current_user = None
+
+    if not current_user:
+        return HttpResponse("User tidak ditemukan di database.", status=404)
+
+    return render(request, 'page/profile.html', {
+        'current_user': current_user,
+        'reader_id': current_user.id  # Make sure this is passed
+    })
+
+@login_required(login_url='login')
+def ubah_password_tab(request, reader_id):
+    if request.method == 'POST':
+        new_password = request.POST.get('new_password')
+        if not new_password or len(new_password) < 8:
+            messages.error(request, "Password harus memiliki minimal 8 karakter.")
+            return redirect('password', reader_id=reader_id)
+
+        try:
+            pembaca = reader.objects.get(id=reader_id)
+        except reader.DoesNotExist:
+            messages.error(request, "Reader dengan ID tersebut tidak ditemukan.")
+            return redirect('password', reader_id=reader_id)
+
+        pembaca.set_password(new_password)
+        pembaca.save()
+
+        messages.success(request, "Password berhasil diperbarui!")
+        return redirect('profil')
+
+    return render(request, 'page/ubah_password.html', {'reader_id': reader_id})
+

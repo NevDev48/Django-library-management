@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container" style="margin-top: 100px;">
+    <h1>About Jurnal</h1>
+    <p>All journals are published by Universitas Bumigora (UBG) and are free to access. Here is the list of journals based on the indexing status.</p>
+
+    <h2 style="margin-top: 100px;">List Jurnal</h2>
+    <div class="row">
+        <!-- Card 1 -->
+        {% for jurnal in jurnals %}
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">{{jurnal.judul}}</h5>
+                    {% if jurnal.dokumen %}
+                        <a href="{{ jurnal.dokumen.url }}" download class="btn btn-dark">
+                            Download PDF
+                        </a>
+                    {% else %}
+                        -
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

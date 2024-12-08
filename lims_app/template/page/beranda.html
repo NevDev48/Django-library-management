@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<main>
+    <aside class="background-img" id="home" style="background-image: url('{% static 'F-UBG.jpg' %}');">
+        <div class="home" style="text-align: center; padding: 200px; color: rgb(255, 255, 255);">
+            <h1 style="font-weight: 700;
+                       font-style: normal;
+                       font-family: 'Segoe UI';
+                       font-size: 50px;
+                       line-height: 106px;
+                       text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+                       border-radius: 5px;">WELCOME TO BUMIGORA LIBRARY</h1>
+            <h6 style="font-family: 'Segoe UI';
+                       font-style: normal;
+                       font-weight: 500;
+                       font-size: 24px;
+                       text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+                       line-height: 28px;">Good people. Good thinking. Good feeling.</h6>
+        </div>
+    </aside>        
+    <div class="box" id="fasilitas">
+        <h1>FACILITIES</h1>
+        <ul>
+            <li>
+                <img src="{% static '566985.png' %}" alt="kitchen" width="60px">
+                <figcaption>Ruang Baca</figcaption>
+            </li>
+            <li>
+                <img src="{% static 'book_icon_150971.webp' %}" alt="pool" width="60px">
+                <figcaption>Buku</figcaption>
+            </li>
+            <li>
+                <img src="{% static 'wifi.jpg' %}" alt="wifi" width="60px">
+                <figcaption>Wifi</figcaption>
+            </li>
+            <li>
+                <img src="{% static 'gym.jpg' %}" alt="gym" width="110px">
+                <figcaption>Gym</figcaption>
+            </li>
+        </ul>
+    </div>
+    <div class="jumbotron d-flex justify-content-center align-items-center mt-5">
+    <div class="container d-flex align-items-center">
+        <!-- Gambar -->
+        <img src="{% static '/baca_buku.jpg' %}" alt="LIMS" width="500px" style="margin-right: 20px;">
+        
+        <!-- Teks -->
+        <div>
+            <h1 class="display-4" style="font-weight: 500;">Quotes</h1>
+            <p class="" style="color: black; font-size: x-large;">Membaca dapat menjaga hati dari kegelisahan dan memelihara waktu dari kesia-siaan. Jangan membaca sampai koma, tetapi bacalah sampai titik. Lebih banyak Anda membaca, lebih banyak hal yang Anda ketahui. Lebih banyak hal yang Anda pelajari, lebih banyak tempat yang Anda kunjungi.</p>
+        </div>
+    </div>
+</div>
+
+    
+    <div class="container-fluid align-items-center justify-content-center mb-5">
+        <h2 class="text-center my-4 fw-bold">About Us</h2>
+        <div class="row text-center align-items-center">
+            <div class="col-md-3 fact-container" style="text-align: center;
+            margin-top: 50px;">
+                <div class="fact-icon" style="font-size: 50px;
+                color: #e74c3c;
+                margin-bottom: 10px;"><img src="{% static 'pembaca.jpg' %}" alt="" width="50px"></div>
+                <div class="fact-number" style="font-size: 40px;
+                font-weight: bold;
+                margin: 10px 0;">{{readers|length}}</div>
+                <div class="fact-description" style="font-size: 18px;
+            color: #555;">Pembaca</div>
+            </div>
+            <div class="col-md-3 fact-container" style="text-align: center;
+            margin-top: 50px;">
+                <div class="fact-icon" style="font-size: 50px;
+                color: #e74c3c;
+                margin-bottom: 10px;">&#127963;</div>
+                <div class="fact-number" style="font-size: 40px;
+                font-weight: bold;
+                margin: 10px 0;">{{jurnals|length}}</div>
+                <div class="fact-description" style="font-size: 18px;
+            color: #555;">Jurnal</div>
+            </div>
+            <div class="col-md-3 fact-container" style="text-align: center;
+            margin-top: 50px;">
+                <div class="fact-icon" style="font-size: 50px;
+                color: #e74c3c;
+                margin-bottom: 10px;">&#128214;</div>
+                <div class="fact-number" style="font-size: 40px;
+                font-weight: bold;
+                margin: 10px 0;">{{books|length}}</div>
+                <div class="fact-description" style="font-size: 18px;
+            color: #555;">Buku</div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="container mt-5" style="background-color: white;">
+    <p style="color: black;">&copy; 2024 Universitas Bumigora. All rights reserved.</p>
+</footer>
+{% endblock %}
