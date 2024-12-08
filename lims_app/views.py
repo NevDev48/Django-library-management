@@ -7,6 +7,8 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from .models import Category, reader, Book_lib, jurnal
 
+
+#VIEWS ADMIN
 # Login page
 def loginAuthPage(request):
     if request.method == 'POST':
@@ -189,7 +191,6 @@ def delete_book(request, id):
         return HttpResponse("Book not found", status=404)
     return redirect('/books')
 
-
 #jurnal page
 from django.shortcuts import render, redirect
 from .models import jurnal
@@ -218,7 +219,7 @@ def delete_jurnal(request, jurnal_id):
     return redirect('/jurnal')
 
 
-#INI PAGE LAIN
+#INI PAGE USER
 def loginPage(request):
     if request.method == 'POST':
         reference_id = request.POST.get('reference_id')
@@ -236,6 +237,7 @@ def loginPage(request):
 
                 # Debugging
                 print(f"Session created: {request.session['reference_id']} - {request.session['reader_name']}")
+                messages.success(request, f'Welcome, {user.reader_name}!')
                 return redirect('beranda')  # Redirect ke beranda
             else:
                 messages.error(request, 'Password salah. Silakan coba lagi.')

@@ -31,9 +31,6 @@
         {% csrf_token %}
         <div class="mb-3 bg p-5 rounded">
           <h2 class="text-center">Login</h2>
-          {% for message in messages %}
-            <div class="alert alert-info">{{ message }}</div>
-          {% endfor %}
           <label for="reference_id" class="form-label mt-4 fw-semibold">Reference ID</label>
           <input 
             type="text" 
