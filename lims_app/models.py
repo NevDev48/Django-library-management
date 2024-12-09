@@ -29,6 +29,15 @@ class Book_lib(models.Model):
     publication_date = models.DateField()
     image = models.ImageField(upload_to='book_images/', null=True, blank=True) 
 
+class BorrowHistory(models.Model):
+    reader = models.ForeignKey(reader, on_delete=models.CASCADE, related_name='borrowed_books')
+    book = models.ForeignKey(Book_lib, on_delete=models.CASCADE, related_name='borrow_history')
+    borrowed_at = models.DateTimeField(auto_now_add=True)
+    is_returned = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.reader.reader_name} - {self.book.title} - {self.borrowed_at}"
+
 class jurnal(models.Model):
     def __str__(self):
         return self.judul

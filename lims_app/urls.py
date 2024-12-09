@@ -26,11 +26,17 @@ urlpatterns = [
     path('jurnal/save/', save_jurnal, name='save_jurnal'),
     path('delete_jurnal/<int:jurnal_id>/', delete_jurnal, name='delete_jurnal'),
 
+    #return tab
+    path('returns/', returns, name='returns'),
+    path('returns/return/<int:borrow_id>/', kembalikan_buku_admin, name='kembalikan_buku_admin'),
+
     #page
     path('beranda', beranda, name='beranda'),
     path('jurnal_page', jurnal_page, name='jurnal_page'),
     path('buku', buku, name='buku'),
     path('riwayat', riwayat, name='riwayat'),
+    path('pinjam/<int:book_id>/', pinjam_buku, name='pinjam_buku'),
+    path('kembalikan/<int:borrow_id>/', kembalikan_buku, name='kembalikan_buku'),
     path('profil', profil, name='profil'),
     path('login', loginPage, name='login'),
     path('logoutPage/', logoutPage, name='logoutPage'),

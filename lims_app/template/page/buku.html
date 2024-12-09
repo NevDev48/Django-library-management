@@ -7,24 +7,24 @@
     <div class="row">
         <!-- Card 1 -->
         {% for Book_lib in books %}
-        <div class="col-md-4">
-            <div class="card mb-4 shadow-sm">
-                {% if Book_lib.image %}
-                    <img src="{{ Book_lib.image.url }}" alt="{{ Book_lib.title }}" width="150px" class="img-thumbnail">
-                {% else %}
-                    <p>Tidak ada gambar</p>
-                {% endif %}
-                <div class="card-body">
-                    <h5 class="card-title">Judul: {{Book_lib.title}}</h5>
-                    <p class="card-text">ID BUku: {{Book_lib.id}}</p>
-                    <p class="card-text">Penulis: {{Book_lib.author}}</p>
-                    <p class="card-text">Category: {{Book_lib.category}}</p>
-                    <p class="card-text">Tahun Terbit: {{Book_lib.publication_date}}</p>
-                    <a href="#" class="btn btn-primary">Pinjam</a>
-                </div>
+    <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+            {% if Book_lib.image %}
+                <img src="{{ Book_lib.image.url }}" alt="{{ Book_lib.title }}" width="150px" class="img-thumbnail">
+            {% else %}
+                <p>Tidak ada gambar</p>
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">Judul: {{ Book_lib.title }}</h5>
+                <p class="card-text">ID Buku: {{ Book_lib.id }}</p>
+                <p class="card-text">Penulis: {{ Book_lib.author }}</p>
+                <p class="card-text">Kategori: {{ Book_lib.category }}</p>
+                <p class="card-text">Tahun Terbit: {{ Book_lib.publication_date }}</p>
+                <a href="{% url 'pinjam_buku' Book_lib.id %}" class="btn btn-primary">Pinjam</a>
             </div>
         </div>
-        {% endfor %}
+    </div>
+{% endfor %}
     </div>
 </div>
 {% endblock %}

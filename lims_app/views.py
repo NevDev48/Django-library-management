@@ -5,7 +5,7 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import redirect
-from .models import Category, reader, Book_lib, jurnal
+from .models import BorrowHistory, Category, reader, Book_lib, jurnal
 
 
 #VIEWS ADMIN
@@ -195,11 +195,13 @@ def delete_book(request, id):
 from django.shortcuts import render, redirect
 from .models import jurnal
 
+@login_required(login_url='loginAuthPage')
 def jurnal_tab(request):
     if request.method == "GET":
         jurnals = jurnal.objects.all()
     return render(request, 'jurnal.html', {'current_tab': 'jurnal', 'jurnals': jurnals})
 
+@login_required(login_url='loginAuthPage')
 def save_jurnal(request):
     if request.method == "POST":
         judul = request.POST['judul']
@@ -213,10 +215,32 @@ def save_jurnal(request):
         jurnal_item.save()
         return redirect('/jurnal')
     
+@login_required(login_url='loginAuthPage')
 def delete_jurnal(request, jurnal_id):
     jurnal_item = get_object_or_404(jurnal, id=jurnal_id)
     jurnal_item.delete()
     return redirect('/jurnal')
+
+@login_required(login_url='loginAuthPage')
+def returns(request):
+    borrowed_books = BorrowHistory.objects.filter(is_returned=False)  # Hanya buku yang belum dikembalikan
+    return render(request, 'return.html', {'current_tab': 'returns', 'borrowed_books': borrowed_books})
+
+@login_required(login_url='loginAuthPage')
+def kembalikan_buku_admin(request, borrow_id):
+    borrow_history = get_object_or_404(BorrowHistory, id=borrow_id)
+
+    # Periksa apakah buku sudah dikembalikan
+    if borrow_history.is_returned:
+        messages.error(request, "Buku ini sudah dikembalikan.")
+        return redirect('returns')
+
+    # Tandai buku sebagai dikembalikan
+    borrow_history.is_returned = True
+    borrow_history.save()
+
+    messages.success(request, f"Buku '{borrow_history.book.title}' berhasil dikembalikan.")
+    return redirect('returns')
 
 
 #INI PAGE USER
@@ -249,21 +273,16 @@ def loginPage(request):
 
 def logoutPage(request):
     request.session.flush()  # Hapus semua data di session
-    return redirect('login')
+    return redirect('beranda')
 
-@login_required(login_url='login')
 def beranda(request):
-    reference_id = request.session.get('reference_id', None)
-    if not reference_id:
-        print("Session not found, redirecting to login.")
-        return redirect('login')  # Jika session hilang, redirect ke login
-    
+    reference_id = request.session.get('reference_id')
     current_user = None
-    try:
-        current_user = reader.objects.get(reference_id=reference_id)
-    except reader.DoesNotExist:
-        current_user = None
-
+    if reference_id:
+        try:
+            current_user = reader.objects.get(reference_id=reference_id)
+        except reader.DoesNotExist:
+            current_user = None
     jurnals = jurnal.objects.all()
     books = Book_lib.objects.all()
     readers = reader.objects.all()
@@ -273,11 +292,11 @@ def beranda(request):
         'jurnals': jurnals,
         'books': books,
         'readers': readers,
-        'current_user': current_user
+        'current_user': current_user  # Tidak ada user login
     })
 
 
-@login_required(login_url='login')
+
 def jurnal_page(request):
     if request.method == "GET":
         jurnals = jurnal.objects.all()
@@ -285,15 +304,63 @@ def jurnal_page(request):
 
     return render(request, "page/jurnal_page.html", {'current_tab': 'jurnal_page', 'jurnals': jurnals})
 
-@login_required(login_url='login')
 def buku(request):
-    if request.method == "GET":
-        books = Book_lib.objects.all()
-    return render(request, "page/buku.html", {'current_tab': 'buku', "books": books})
+    if not request.session.get('reference_id'):
+        return redirect('login')
 
-@login_required(login_url='login')
+    # Ambil buku yang belum dipinjam
+    reader_instance = get_object_or_404(reader, reference_id=request.session.get('reference_id'))
+    borrowed_books = BorrowHistory.objects.filter(reader=reader_instance, is_returned=False).values_list('book', flat=True)
+    available_books = Book_lib.objects.exclude(id__in=borrowed_books)
+
+    return render(request, "page/buku.html", {'current_tab': 'buku', 'books': available_books})
+
+
+def pinjam_buku(request, book_id):
+    if not request.session.get('reference_id'):
+        messages.error(request, "Anda harus login untuk meminjam buku.")
+        return redirect('login')
+
+    book = get_object_or_404(Book_lib, id=book_id)
+    reader_instance = get_object_or_404(reader, reference_id=request.session.get('reference_id'))
+
+    # Catat riwayat peminjaman
+    BorrowHistory.objects.create(reader=reader_instance, book=book)
+
+    # Anda tidak perlu menghapus buku dari database, cukup buat entri di BorrowHistory
+    messages.success(request, f"Buku '{book.title}' berhasil dipinjam.")
+    return redirect('buku')
+
+
+def kembalikan_buku(request, borrow_id):
+    if not request.session.get('reference_id'):
+        messages.error(request, "Anda harus login untuk mengembalikan buku.")
+        return redirect('login')
+
+    borrow_history = get_object_or_404(BorrowHistory, id=borrow_id)
+    
+    # Periksa apakah buku sudah dikembalikan
+    if borrow_history.is_returned:
+        messages.error(request, "Buku ini sudah dikembalikan.")
+        return redirect('riwayat')
+
+    # Tandai buku sebagai dikembalikan
+    borrow_history.is_returned = True
+    borrow_history.save()
+
+    # Buku tidak perlu ditambahkan lagi ke database karena sudah ada di Book_lib
+    messages.success(request, f"Buku '{borrow_history.book.title}' berhasil dikembalikan.")
+    return redirect('riwayat')
+
+
 def riwayat(request):
-    return render(request, "page/riwayat.html", {'current_tab': 'riwayat'})
+    if not request.session.get('reference_id'):
+        return redirect('login')
+
+    reader_instance = get_object_or_404(reader, reference_id=request.session.get('reference_id'))
+    riwayat_buku = BorrowHistory.objects.filter(reader=reader_instance)
+
+    return render(request, "page/riwayat.html", {'current_tab': 'riwayat', 'riwayat_buku': riwayat_buku})
 
 def profil(request):
     reference_id = request.session.get('reference_id', None)
@@ -312,7 +379,6 @@ def profil(request):
         'reader_id': current_user.id  # Make sure this is passed
     })
 
-@login_required(login_url='login')
 def ubah_password_tab(request, reader_id):
     if request.method == 'POST':
         new_password = request.POST.get('new_password')

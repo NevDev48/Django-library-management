@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+{% extends "index.html" %}
+{% load static %}
+
+{% block main_content %}
+<div class="container mt-4"> 
+    <div class="text-center">
+        <h3 class="fw-bold mb-3">Daftar Pinjam Buku</h3> 
+        <p class="mt-3 text-dark">Jumlah Buku Dipinjam: {{ borrowed_books|length }}</p>
+    </div>
+</div>
+
+<div class="container-fluid d-flex justify-content-center align-items-center mt-5">
+    <div class="">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Gambar Buku</th>
+                    <th>Judul</th>
+                    <th>Tanggal Pinjam</th>
+                    <th>ID Pengunjung</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for borrow in borrowed_books %}
+                <tr>
+                    <td>
+                        {% if borrow.book.image %}
+                        <img src="{{ borrow.book.image.url }}" alt="{{ borrow.book.title }}" width="50">
+                        {% else %}
+                        Tidak ada gambar
+                        {% endif %}
+                    </td>
+                    <td>{{ borrow.book.title }}</td>
+                    <td>{{ borrow.borrowed_at|date:"d M Y H:i" }}</td>
+                    <td>{{ borrow.reader.reference_id }}</td>
+                    <td>
+                        <a href="{% url 'kembalikan_buku_admin' borrow.id %}">
+                            <button class="btn btn-danger">Kembalikan</button>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

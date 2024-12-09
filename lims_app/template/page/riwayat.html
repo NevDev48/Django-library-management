@@ -5,19 +5,26 @@
 <div class="container mt-5">
     <h1 class="mb-5">Riwayat Pinjam Buku</h1>
     <div class="row">
-        <div class="col-md-4">
-            <div class="card mb-4 shadow-sm">
-                <img src="{% static 'images/book1.jpg' %}" class="card-img-top" alt="Book Cover">
-                <div class="card-body">
-                    <h5 class="card-title">Judul:</h5>
-                    <p class="card-text">ID BUku: </p>
-                    <p class="card-text">Penulis: </p>
-                    <p class="card-text">Category: </p>
-                    <p class="card-text">Tahun Terbit: </p>
-                    <p class="card-text text-center fw-bold text-danger">DIKEMBALIKAN MAKSIMAL SETELAH 30 HARI PEMINJAMAN!</p>
-                </div>
+        {% for item in riwayat_buku %}
+    <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+            {% if item.book.image %}
+                <img src="{{ item.book.image.url }}" alt="{{ item.book.title }}" class="card-img-top">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">Judul: {{ item.book.title }}</h5>
+                <p class="card-text">Penulis: {{ item.book.author }}</p>
+                <p class="card-text">Tanggal Pinjam: {{ item.borrowed_at|date:"d M Y" }}</p>
+                <p class="card-text text-center fw-bold text-danger">DIKEMBALIKAN MAKSIMAL 30 HARI!</p>
+                {% if not item.is_returned %}
+                    <a href="{% url 'kembalikan_buku' item.id %}" class=""></a>
+                {% else %}
+                    <p class="text-success">Buku sudah dikembalikan</p>
+                {% endif %}
             </div>
         </div>
+    </div>
+{% endfor %}
     </div>
 </div>
 {% endblock %}
