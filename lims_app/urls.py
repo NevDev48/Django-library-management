@@ -30,6 +30,9 @@ urlpatterns = [
     path('returns/', returns, name='returns'),
     path('returns/return/<int:borrow_id>/', kembalikan_buku_admin, name='kembalikan_buku_admin'),
 
+    #report tab
+    path('report', report, name='report'),
+
     #page
     path('beranda', beranda, name='beranda'),
     path('jurnal_page', jurnal_page, name='jurnal_page'),

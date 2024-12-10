@@ -34,7 +34,7 @@
                     </td>
                     <td>{{ borrow.book.title }}</td>
                     <td>{{ borrow.borrowed_at|date:"d M Y H:i" }}</td>
-                    <td>{{ borrow.reader.reference_id }}</td>
+                    <td>{{ borrow.reader.id }}</td>
                     <td>
                         <a href="{% url 'kembalikan_buku_admin' borrow.id %}">
                             <button class="btn btn-danger">Kembalikan</button>

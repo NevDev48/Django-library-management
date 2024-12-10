@@ -1,101 +1,314 @@
-{% extends "base.html" %}
-{% load static %}
-
-{% block content %}
+{% extends "base.html" %} {% load static %} {% block content %}
 <main>
-    <aside class="background-img" id="home" style="background-image: url('{% static 'F-UBG.jpg' %}');">
-        <div class="home" style="text-align: center; padding: 200px; color: rgb(255, 255, 255);">
-            <h1 style="font-weight: 700;
-                       font-style: normal;
-                       font-family: 'Segoe UI';
-                       font-size: 50px;
-                       line-height: 106px;
-                       text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
-                       border-radius: 5px;">WELCOME TO BUMIGORA LIBRARY</h1>
-            <h6 style="font-family: 'Segoe UI';
-                       font-style: normal;
-                       font-weight: 500;
-                       font-size: 24px;
-                       text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
-                       line-height: 28px;">Good people. Good thinking. Good feeling.</h6>
-        </div>
-    </aside>        
-    <div class="box" id="fasilitas">
-        <h1>FACILITIES</h1>
-        <ul>
-            <li>
-                <img src="{% static '566985.png' %}" alt="kitchen" width="60px">
-                <figcaption>Ruang Baca</figcaption>
-            </li>
-            <li>
-                <img src="{% static 'book_icon_150971.webp' %}" alt="pool" width="60px">
-                <figcaption>Buku</figcaption>
-            </li>
-            <li>
-                <img src="{% static 'wifi.jpg' %}" alt="wifi" width="60px">
-                <figcaption>Wifi</figcaption>
-            </li>
-            <li>
-                <img src="{% static 'gym.jpg' %}" alt="gym" width="110px">
-                <figcaption>Gym</figcaption>
-            </li>
-        </ul>
+  <aside
+    class="background-img"
+    id="home"
+    style="background-image: url('{% static 'F-UBG.jpg' %}')"
+  >
+    <div
+      class="home"
+      style="text-align: center; padding: 200px; color: rgb(255, 255, 255)"
+    >
+      <h1
+        style="
+          font-weight: 700;
+          font-style: normal;
+          font-family: 'Segoe UI';
+          font-size: 50px;
+          line-height: 106px;
+          text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+          border-radius: 5px;
+        "
+      >
+        WELCOME TO BUMIGORA LIBRARY
+      </h1>
+      <h6
+        style="
+          font-family: 'Segoe UI';
+          font-style: normal;
+          font-weight: 500;
+          font-size: 24px;
+          text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+          line-height: 28px;
+        "
+      >
+        Good people. Good thinking. Good feeling.
+      </h6>
     </div>
-    <div class="jumbotron d-flex justify-content-center align-items-center mt-5">
+  </aside>
+  <div class="box" id="fasilitas">
+    <h1>FACILITIES</h1>
+    <ul>
+      <li>
+        <img src="{% static '566985.png' %}" alt="kitchen" width="60px" />
+        <figcaption>Ruang Baca</figcaption>
+      </li>
+      <li>
+        <img
+          src="{% static 'book_icon_150971.webp' %}"
+          alt="pool"
+          width="60px"
+        />
+        <figcaption>Buku</figcaption>
+      </li>
+      <li>
+        <img src="{% static 'wifi.jpg' %}" alt="wifi" width="60px" />
+        <figcaption>Wifi</figcaption>
+      </li>
+      <li>
+        <img src="{% static 'ac.png' %}" alt="gym" width="60px" />
+        <figcaption>AC</figcaption>
+      </li>
+    </ul>
+  </div>
+  <div class="jumbotron d-flex justify-content-center align-items-center mt-5">
     <div class="container d-flex align-items-center">
-        <!-- Gambar -->
-        <img src="{% static '/baca_buku.jpg' %}" alt="LIMS" width="500px" style="margin-right: 20px;">
-        
-        <!-- Teks -->
-        <div>
-            <h1 class="display-4" style="font-weight: 500;">Quotes</h1>
-            <p class="" style="color: black; font-size: x-large;">Membaca dapat menjaga hati dari kegelisahan dan memelihara waktu dari kesia-siaan. Jangan membaca sampai koma, tetapi bacalah sampai titik. Lebih banyak Anda membaca, lebih banyak hal yang Anda ketahui. Lebih banyak hal yang Anda pelajari, lebih banyak tempat yang Anda kunjungi.</p>
-        </div>
-    </div>
-</div>
+      <!-- Gambar -->
+      <img
+        src="{% static '/baca_buku.jpg' %}"
+        alt="LIMS"
+        width="500px"
+        style="margin-right: 20px"
+      />
 
-    
-    <div class="container-fluid align-items-center justify-content-center mb-5">
-        <h2 class="text-center my-4 fw-bold">About Us</h2>
-        <div class="row text-center align-items-center">
-            <div class="col-md-3 fact-container" style="text-align: center;
-            margin-top: 50px;">
-                <div class="fact-icon" style="font-size: 50px;
-                color: #e74c3c;
-                margin-bottom: 10px;"><img src="{% static 'pembaca.jpg' %}" alt="" width="50px"></div>
-                <div class="fact-number" style="font-size: 40px;
-                font-weight: bold;
-                margin: 10px 0;">{{readers|length}}</div>
-                <div class="fact-description" style="font-size: 18px;
-            color: #555;">Pembaca</div>
-            </div>
-            <div class="col-md-3 fact-container" style="text-align: center;
-            margin-top: 50px;">
-                <div class="fact-icon" style="font-size: 50px;
-                color: #e74c3c;
-                margin-bottom: 10px;">&#127963;</div>
-                <div class="fact-number" style="font-size: 40px;
-                font-weight: bold;
-                margin: 10px 0;">{{jurnals|length}}</div>
-                <div class="fact-description" style="font-size: 18px;
-            color: #555;">Jurnal</div>
-            </div>
-            <div class="col-md-3 fact-container" style="text-align: center;
-            margin-top: 50px;">
-                <div class="fact-icon" style="font-size: 50px;
-                color: #e74c3c;
-                margin-bottom: 10px;">&#128214;</div>
-                <div class="fact-number" style="font-size: 40px;
-                font-weight: bold;
-                margin: 10px 0;">{{books|length}}</div>
-                <div class="fact-description" style="font-size: 18px;
-            color: #555;">Buku</div>
-            </div>
-        </div>
+      <!-- Teks -->
+      <div>
+        <h1 class="display-4" style="font-weight: 500">Quotes</h1>
+        <p class="" style="color: black; font-size: x-large">
+          Membaca dapat menjaga hati dari kegelisahan dan memelihara waktu dari
+          kesia-siaan. Jangan membaca sampai koma, tetapi bacalah sampai titik.
+          Lebih banyak Anda membaca, lebih banyak hal yang Anda ketahui. Lebih
+          banyak hal yang Anda pelajari, lebih banyak tempat yang Anda kunjungi.
+        </p>
+      </div>
     </div>
+  </div>
+
+  <div class="container-fluid align-items-center justify-content-center mb-5">
+    <h2 class="text-center my-4 fw-bold">About Us</h2>
+    <div class="row text-center align-items-center">
+      <div
+        class="col-md-3 fact-container"
+        style="text-align: center; margin-top: 50px"
+      >
+        <div
+          class="fact-icon"
+          style="font-size: 50px; color: #e74c3c; margin-bottom: 10px"
+        >
+          <img src="{% static 'pembaca.jpg' %}" alt="" width="50px" />
+        </div>
+        <div
+          class="fact-number"
+          style="font-size: 40px; font-weight: bold; margin: 10px 0"
+        >
+          {{readers|length}}
+        </div>
+        <div class="fact-description" style="font-size: 18px; color: #555">
+          Pembaca
+        </div>
+      </div>
+      <div
+        class="col-md-3 fact-container"
+        style="text-align: center; margin-top: 50px"
+      >
+        <div
+          class="fact-icon"
+          style="font-size: 50px; color: #e74c3c; margin-bottom: 10px"
+        >
+          &#127963;
+        </div>
+        <div
+          class="fact-number"
+          style="font-size: 40px; font-weight: bold; margin: 10px 0"
+        >
+          {{jurnals|length}}
+        </div>
+        <div class="fact-description" style="font-size: 18px; color: #555">
+          Jurnal
+        </div>
+      </div>
+      <div
+        class="col-md-3 fact-container"
+        style="text-align: center; margin-top: 50px"
+      >
+        <div
+          class="fact-icon"
+          style="font-size: 50px; color: #e74c3c; margin-bottom: 10px"
+        >
+          &#128214;
+        </div>
+        <div
+          class="fact-number"
+          style="font-size: 40px; font-weight: bold; margin: 10px 0"
+        >
+          {{books|length}}
+        </div>
+        <div class="fact-description" style="font-size: 18px; color: #555">
+          Buku
+        </div>
+      </div>
+      <div
+    class="col-md-3 fact-container"
+    style="text-align: center; margin-top: 50px"
+  >
+    <div
+      class="fact-icon"
+      style="font-size: 50px; color: #e74c3c; margin-bottom: 10px"
+    >
+      <img src="{% static 'ruangan.jpg' %}" alt="" width="46px">
+    </div>
+    <div
+      class="fact-number"
+      style="font-size: 40px; font-weight: bold; margin: 10px 0"
+    >
+      2
+    </div>
+    <div class="fact-description" style="font-size: 18px; color: #555">
+      Ruangan
+    </div>
+  </div>
+    </div>
+  </div>
+
+  <div
+    class="container py-5"
+    style="background-color: #2e2e2e; font-family: Arial, sans-serif"
+  >
+    <div class="row g-4">
+      <!-- Info Boxes -->
+      <div class="col-lg-6">
+        <div class="row g-4">
+          <div class="col-6">
+            <div
+              class="info-box"
+              style="
+                background-color: #ffffff;
+                padding: 20px;
+                border-radius: 5px;
+                text-align: center;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+              "
+            >
+              <span class="fs-4"><img src="{% static 'maps.png' %}" alt="" width="50px"></span>
+              <h3 style="margin: 10px 0; font-size: 18px; color: #333">
+                OUR UNIVERSITY
+              </h3>
+              <p style="margin: 0; color: #555; font-size: 14px">
+                Jl. Ismail Marzuki No.22, Cilinaya, Kec. Cakranegara, Kota Mataram, NTB
+              </p>
+            </div>
+          </div>
+          <div class="col-6">
+            <div
+              class="info-box"
+              style="
+                background-color: #ffffff;
+                padding: 20px;
+                border-radius: 5px;
+                text-align: center;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+              "
+            >
+              <span class="fs-4"><img src="{% static 'telepon.png' %}" alt="" width="70px"></span>
+              <h3 style="margin: 10px 0; font-size: 18px; color: #333">
+                PHONE NUMBER
+              </h3>
+              <p style="margin: 0; color: #555; font-size: 14px">
+                (0370) 634498
+              </p>
+            </div>
+          </div>
+          <div class="col-6">
+            <div
+              class="info-box"
+              style="
+                background-color: #ffffff;
+                padding: 20px;
+                border-radius: 5px;
+                text-align: center;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+              "
+            >
+              <span class="fs-4"><img src="{% static 'fax.png' %}" alt="" width="50px"></span>
+              <h3 style="margin: 10px 0; font-size: 18px; color: #333">FAX</h3>
+              <p style="margin: 0; color: #555; font-size: 14px">
+                1-234-567-8900
+              </p>
+            </div>
+          </div>
+          <div class="col-6">
+            <div
+              class="info-box"
+              style="
+                background-color: #ffffff;
+                padding: 20px;
+                border-radius: 5px;
+                text-align: center;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+              "
+            >
+              <span class="fs-4"><img src="{% static 'email.webp' %}" alt="" width="50px"></span>
+              <h3 style="margin: 10px 0; font-size: 18px; color: #333">
+                EMAIL
+              </h3>
+              <p style="margin: 0; color: #555; font-size: 14px">
+                admin@universitasbumigora.ac.id
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Contact Form -->
+      <div class="col-lg-6">
+        <div class="contact-form" style="background-color: #71c9ce; padding: 30px; border-radius: 5px">
+            <h2 class="text-light">Contact Us</h2>
+            <form action="" method="POST">
+                {% if messages %}
+    <div class="alert alert-dismissible fade show" role="alert">
+        {% for message in messages %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+                {% csrf_token %}
+                <div class="mb-3">
+                    <input
+                        type="text"
+                        name="nama"
+                        class="form-control rounded"
+                        placeholder="Enter your Name"
+                        required
+                    />
+                </div>
+                <div class="mb-3">
+                    <input
+                        type="email"
+                        name="email"
+                        class="form-control rounded"
+                        placeholder="Enter a valid email address"
+                        required
+                    />
+                </div>
+                <div class="mb-3">
+                    <textarea
+                        name="isi_pesan"
+                        class="form-control rounded"
+                        rows="4"
+                        placeholder="Enter your message"
+                        required
+                    ></textarea>
+                </div>
+                <button type="submit" class="btn btn-dark w-100">SUBMIT</button>
+            </form>            
+        </div>
+    </div>    
+    </div>
+  </div>
 </main>
 
-<footer class="container mt-5" style="background-color: white;">
-    <p style="color: black;">&copy; 2024 Universitas Bumigora. All rights reserved.</p>
+<footer class="container mt-5" style="background-color: white">
+  <p style="color: black">
+    &copy; 2024 Universitas Bumigora. All rights reserved.
+  </p>
 </footer>
 {% endblock %}

@@ -43,3 +43,11 @@ class jurnal(models.Model):
         return self.judul
     judul = models.CharField(max_length=255)
     dokumen = models.FileField(upload_to='jurnal/')
+
+class ContactUs(models.Model):
+    nama = models.CharField(max_length=100, verbose_name="Nama")
+    email = models.EmailField(verbose_name="Email")
+    isi_pesan = models.TextField(verbose_name="Isi Pesan")
+
+    def __str__(self):
+        return f"{self.nama} - {self.email}"

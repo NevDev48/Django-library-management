@@ -78,6 +78,13 @@
                     <a class="nav-link" href="/returns">RETURNS</a>
                 {% endif %}
             </li>
+            <li class="nav-item">
+                {% if current_tab == 'report' %}
+                    <a class="nav-link active" href="/report">REPORT</a>
+                {% else %}
+                    <a class="nav-link" href="/report">REPORT</a>
+                {% endif %}
+            </li>
         </ul>
         
         <!-- Tombol Logout di ujung kanan -->

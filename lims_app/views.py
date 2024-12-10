@@ -5,7 +5,7 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import redirect
-from .models import BorrowHistory, Category, reader, Book_lib, jurnal
+from .models import BorrowHistory, Category, ContactUs, reader, Book_lib, jurnal
 
 
 #VIEWS ADMIN
@@ -242,6 +242,9 @@ def kembalikan_buku_admin(request, borrow_id):
     messages.success(request, f"Buku '{borrow_history.book.title}' berhasil dikembalikan.")
     return redirect('returns')
 
+def report(request):
+    messages = ContactUs.objects.all()
+    return render(request, "report.html", {'messages': messages})
 
 #INI PAGE USER
 def loginPage(request):
@@ -283,6 +286,21 @@ def beranda(request):
             current_user = reader.objects.get(reference_id=reference_id)
         except reader.DoesNotExist:
             current_user = None
+
+    if request.method == 'POST':
+        # Proses form Contact Us
+        nama = request.POST.get('nama')
+        email = request.POST.get('email')
+        isi_pesan = request.POST.get('isi_pesan')
+        
+        if nama and email and isi_pesan:
+            ContactUs.objects.create(nama=nama, email=email, isi_pesan=isi_pesan)
+            messages.success(request, 'Pesan Anda telah terkirim. Terima kasih!')
+        else:
+            messages.error(request, 'Harap isi semua field dengan benar.')
+
+        return redirect('beranda')
+
     jurnals = jurnal.objects.all()
     books = Book_lib.objects.all()
     readers = reader.objects.all()
@@ -308,9 +326,13 @@ def buku(request):
     if not request.session.get('reference_id'):
         return redirect('login')
 
-    # Ambil buku yang belum dipinjam
+    # Ambil reader yang sedang login
     reader_instance = get_object_or_404(reader, reference_id=request.session.get('reference_id'))
-    borrowed_books = BorrowHistory.objects.filter(reader=reader_instance, is_returned=False).values_list('book', flat=True)
+
+    # Cari buku yang sedang dipinjam oleh siapapun dan belum dikembalikan
+    borrowed_books = BorrowHistory.objects.filter(is_returned=False).values_list('book', flat=True)
+
+    # Buku yang tersedia adalah buku yang tidak ada di daftar borrowed_books
     available_books = Book_lib.objects.exclude(id__in=borrowed_books)
 
     return render(request, "page/buku.html", {'current_tab': 'buku', 'books': available_books})
@@ -322,12 +344,17 @@ def pinjam_buku(request, book_id):
         return redirect('login')
 
     book = get_object_or_404(Book_lib, id=book_id)
+
+    # Periksa apakah buku sedang dipinjam oleh orang lain
+    if BorrowHistory.objects.filter(book=book, is_returned=False).exists():
+        messages.error(request, f"Buku '{book.title}' sedang dipinjam dan tidak tersedia saat ini.")
+        return redirect('buku')
+
     reader_instance = get_object_or_404(reader, reference_id=request.session.get('reference_id'))
 
     # Catat riwayat peminjaman
     BorrowHistory.objects.create(reader=reader_instance, book=book)
 
-    # Anda tidak perlu menghapus buku dari database, cukup buat entri di BorrowHistory
     messages.success(request, f"Buku '{book.title}' berhasil dipinjam.")
     return redirect('buku')
 
