@@ -6,6 +6,8 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from .models import BorrowHistory, Category, ContactUs, reader, Book_lib, jurnal
+from django.db.models import Q
+from django.core.paginator import Paginator
 
 
 #VIEWS ADMIN
@@ -43,15 +45,24 @@ def home(request):
 def readers_tab(request):
     if request.method == "GET":
         readers = reader.objects.all()
-        return render(request, "readers.html", context={"current_tab": "readers", "readers": readers})
-    
     else:  # Handle POST request (search data)
         query = request.POST['query']
         readers = reader.objects.raw(
             "SELECT * FROM lims_app_reader WHERE reader_name LIKE %s",
             [f"%{query}%"]
         )
-        return render(request, "readers.html", context={"current_tab": "readers", "readers": readers, "query": query})
+
+    # Pagination
+    page_number = request.GET.get('page', 1)  # Ambil nomor halaman dari parameter URL, default ke 1
+    paginator = Paginator(readers, 5)  # 5 pengunjung per halaman
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        "current_tab": "readers",
+        "readers": page_obj,  # Gunakan objek halaman untuk template
+        "query": request.POST.get('query', '')  # Tetap kirim query untuk input pencarian
+    }
+    return render(request, "readers.html", context)
 
 # Add readers tab - requires login
 @login_required(login_url='loginAuthPage')
@@ -134,7 +145,17 @@ def books_tab(request):
             books = Book_lib.objects.filter(title__icontains=query1)
         else:
             books = Book_lib.objects.all()
-    return render(request, "books.html", context={"current_tab": "books", "books": books, "query1": query1})
+    
+    # Pagination
+    page_number = request.GET.get('page', 1)  # Ambil nomor halaman dari parameter URL
+    paginator = Paginator(books, 5)  # 5 buku per halaman
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, "books.html", context={
+        "current_tab": "books",
+        "books": page_obj,  # Kirimkan objek halaman ke template
+        "query1": query1
+    })
 
 @login_required(login_url='loginAuthPage')
 def add_books_tab(request):
@@ -197,7 +218,13 @@ from .models import jurnal
 
 @login_required(login_url='loginAuthPage')
 def jurnal_tab(request):
-    if request.method == "GET":
+    if request.method == "POST":
+        search_query = request.POST.get('search_query', '').strip()
+        if search_query:
+            jurnals = jurnal.objects.filter(Q(judul__icontains=search_query))
+        else:
+            jurnals = jurnal.objects.all()
+    else:  # Default untuk GET
         jurnals = jurnal.objects.all()
     return render(request, 'jurnal.html', {'current_tab': 'jurnal', 'jurnals': jurnals})
 
@@ -242,6 +269,7 @@ def kembalikan_buku_admin(request, borrow_id):
     messages.success(request, f"Buku '{borrow_history.book.title}' berhasil dikembalikan.")
     return redirect('returns')
 
+@login_required(login_url='loginAuthPage')
 def report(request):
     messages = ContactUs.objects.all()
     return render(request, "report.html", {'messages': messages})
@@ -335,7 +363,12 @@ def buku(request):
     # Buku yang tersedia adalah buku yang tidak ada di daftar borrowed_books
     available_books = Book_lib.objects.exclude(id__in=borrowed_books)
 
-    return render(request, "page/buku.html", {'current_tab': 'buku', 'books': available_books})
+    # Pagination
+    page_number = request.GET.get('page', 1)  # Ambil nomor halaman dari parameter URL
+    paginator = Paginator(available_books, 6)  # 6 buku per halaman
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, "page/buku.html", {'current_tab': 'buku', 'books': page_obj})
 
 
 def pinjam_buku(request, book_id):

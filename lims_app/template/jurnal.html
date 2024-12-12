@@ -9,7 +9,7 @@
         <nav class="navbar bg-body-light justify-content-center">
             <form class="d-flex" role="search" action="" method="POST">
                 {% csrf_token %}
-                <input class="form-control me-2" type="search" name="" placeholder="Search" aria-label="Search" value="">
+                <input class="form-control me-2" type="search" name="search_query" placeholder="Search" aria-label="Search" value="">
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
         </nav>
@@ -24,7 +24,7 @@
         <input type="file" id="dokumen" name="dokumen" required>
         <label for="" class="form-label">Judul:</label>
         <input type="text" id="judul" name="judul" required>
-        <div class="d-gird">
+        <div class="d-grid">
         <button class="btn btn-success mt-3" type="submit">Upload</button>
         </div>
     </form>
@@ -32,33 +32,42 @@
 
 <div class="container-fluid d-flex justify-content-center align-items-center mt-5">
     <div class="">
-<table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Jurnal</th>
-        <th>Judul</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for jurnal in jurnals %}
-      <tr>
-        <td scope="row">
-          {% if jurnal.dokumen %}
-                    <a href="{{ jurnal.dokumen.url }}" download class="btn btn-primary">
-                        Download Dokumen
-                    </a>
-                {% else %}
-                    -
-                {% endif %}
-        </td>
-        <td>{{jurnal.judul}}</td>
-        <td><a href="delete_jurnal/{{jurnal.id}}" ><button class="btn btn-danger" id="del">delete</button></a></td>
-      </tr>
-    </tbody>
-    {% endfor %}
-  </table>
-</div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Jurnal</th>
+                    <th>Judul</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for jurnal in jurnals %}
+                <tr>
+                    <td scope="row">
+                        {% if jurnal.dokumen %}
+                        <a href="{{ jurnal.dokumen.url }}" download class="btn btn-primary">
+                            Download Dokumen
+                        </a>
+                        {% else %}
+                        -
+                        {% endif %}
+                    </td>
+                    <td>{{jurnal.judul}}</td>
+                    <td>
+                        <a href="delete_jurnal/{{jurnal.id}}" onclick="return confirmDelete();">
+                            <button class="btn btn-danger">Delete</button>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 
+<script>
+function confirmDelete() {
+    return confirm('Apakah Anda yakin ingin menghapus jurnal ini?');
+}
+</script>
 {% endblock %}

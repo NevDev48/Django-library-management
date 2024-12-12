@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 {% extends "index.html" %}
 {% load static %}
-
 {% block main_content %}
+
 <div class="container mt-4"> 
     <div class="text-center">
         <h3 class="fw-bold mb-3">Daftar Pinjam Buku</h3> 
@@ -36,7 +36,7 @@
                     <td>{{ borrow.borrowed_at|date:"d M Y H:i" }}</td>
                     <td>{{ borrow.reader.id }}</td>
                     <td>
-                        <a href="{% url 'kembalikan_buku_admin' borrow.id %}">
+                        <a href="{% url 'kembalikan_buku_admin' borrow.id %}" onclick="return bookReturnedAlert();">
                             <button class="btn btn-danger">Kembalikan</button>
                         </a>
                     </td>
@@ -46,4 +46,12 @@
         </table>
     </div>
 </div>
+
+<script>
+function bookReturnedAlert() {
+    alert('Buku telah berhasil dikembalikan!');
+    return true; // Mengizinkan pengalihan ke URL pengembalian buku
+}
+</script>
+
 {% endblock %}
