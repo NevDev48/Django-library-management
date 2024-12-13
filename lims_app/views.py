@@ -57,10 +57,13 @@ def readers_tab(request):
     paginator = Paginator(readers, 5)  # 5 pengunjung per halaman
     page_obj = paginator.get_page(page_number)
 
+    total_readers_count = reader.objects.count()
+
     context = {
         "current_tab": "readers",
-        "readers": page_obj,  # Gunakan objek halaman untuk template
-        "query": request.POST.get('query', '')  # Tetap kirim query untuk input pencarian
+        "readers": page_obj,
+        "query": request.POST.get('query', ''),
+        "total_readers_count": total_readers_count,
     }
     return render(request, "readers.html", context)
 
@@ -145,6 +148,8 @@ def books_tab(request):
             books = Book_lib.objects.filter(title__icontains=query1)
         else:
             books = Book_lib.objects.all()
+
+    total_book_count = Book_lib.objects.count()
     
     # Pagination
     page_number = request.GET.get('page', 1)  # Ambil nomor halaman dari parameter URL
@@ -154,7 +159,8 @@ def books_tab(request):
     return render(request, "books.html", context={
         "current_tab": "books",
         "books": page_obj,  # Kirimkan objek halaman ke template
-        "query1": query1
+        "query1": query1,
+        "total_book_count": total_book_count,
     })
 
 @login_required(login_url='loginAuthPage')

@@ -3,7 +3,19 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h1 class="text-center mb-4">LIST BUKU</h1><br>
+    <h1 class="text-center mb-4">LIST BUKU</h1>
+
+<div class="d-flex justify-content-center mb-4">
+    <div class="input-group" style="max-width: 600px;">
+        <input 
+            class="form-control" 
+            type="search" 
+            name="query_buku" 
+            placeholder="Cari buku berdasarkan judul" 
+            aria-label="Search" 
+            value="">
+    </div>
+</div>
     <div class="row">
         <!-- Card 1 -->
         {% for Book_lib in books %}
@@ -56,4 +68,30 @@
 </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+    const searchInput = document.querySelector('input[name="query_buku"]');
+    const bookCards = document.querySelectorAll('.card');
+
+    // Tambahkan event listener untuk input pencarian
+    searchInput.addEventListener('input', () => {
+        const query = searchInput.value.toLowerCase();
+
+        bookCards.forEach(card => {
+            const title = card.querySelector('.card-title').innerText.toLowerCase();
+            const author = card.querySelector('.card-text:nth-of-type(2)').innerText.toLowerCase();
+            const category = card.querySelector('.card-text:nth-of-type(3)').innerText.toLowerCase();
+
+            // Periksa apakah query cocok dengan judul, penulis, atau kategori
+            if (title.includes(query) || author.includes(query) || category.includes(query)) {
+                card.parentElement.style.display = 'block'; // Tampilkan kartu buku
+            } else {
+                card.parentElement.style.display = 'none'; // Sembunyikan kartu buku
+            }
+        });
+    });
+});
+
+</script>
 {% endblock %}

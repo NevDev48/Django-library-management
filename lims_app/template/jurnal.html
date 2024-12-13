@@ -14,20 +14,36 @@
             </form>
         </nav>
         <p class="mt-3 text-dark">{{jurnals|length}} Jumlah Jurnal</p>
+        <button class="btn btn-success mt-3" data-bs-toggle="modal" data-bs-target="#uploadModal">Upload Jurnal</button>
     </div>
 </div>
 
-<div class="container-fluid d-flex justify-content-center align-items-center mt-5">
-    <form action="{% url 'save_jurnal' %}" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <label for="dokumen" class="form-label">Upload File:</label>
-        <input type="file" id="dokumen" name="dokumen" required>
-        <label for="" class="form-label">Judul:</label>
-        <input type="text" id="judul" name="judul" required>
-        <div class="d-grid">
-        <button class="btn btn-success mt-3" type="submit">Upload</button>
+<!-- Modal for Upload -->
+<div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="uploadModalLabel">Upload Jurnal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'save_jurnal' %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="dokumen" class="form-label">Upload File:</label>
+                        <input type="file" id="dokumen" name="dokumen" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="judul" class="form-label">Judul:</label>
+                        <input type="text" id="judul" name="judul" class="form-control" required>
+                    </div>
+                    <div class="d-grid">
+                        <button class="btn btn-success" type="submit">Upload</button>
+                    </div>
+                </form>
+            </div>
         </div>
-    </form>
+    </div>
 </div>
 
 <div class="container-fluid d-flex justify-content-center align-items-center mt-5">
@@ -45,7 +61,7 @@
                 <tr>
                     <td scope="row">
                         {% if jurnal.dokumen %}
-                        <a href="{{ jurnal.dokumen.url }}" download class="btn btn-primary">
+                        <a href="{{ jurnal.dokumen.url }}" download class="btn btn-success">
                             Download Dokumen
                         </a>
                         {% else %}

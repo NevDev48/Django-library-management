@@ -121,79 +121,88 @@
     ></script>
 
     <nav
-      class="navbar navbar-expand-lg custom-navbar-shadow"
-      style="background-color: black"
+  class="navbar navbar-expand-lg custom-navbar-shadow"
+  style="background-color: black"
+>
+  <div class="container-fluid">
+    <a href="#" class="navbar-brand">
+      <h1 class="text-light display-6 fw-bold">Perpustakaan Bumigora</h1>
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
     >
-      <div class="container-fluid">
-        <a href="#" class="navbar-brand">
-          <h1 class="text-light display-6 fw-bold">Perpustakaan Bumigora</h1>
-        </a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-          <div class="navbar-nav mx-auto">
-            <!-- Beranda -->
-            {% if current_tab == 'beranda' %}
-            <a href="/beranda" class="nav-item nav-link active text-light"
-              >Beranda</a
-            >
-            {% else %}
-            <a href="/beranda" class="nav-item nav-link text-light">Beranda</a>
-            {% endif %}
-
-            <!-- Jurnal -->
-            {% if current_tab == 'jurnal_page' %}
-            <a href="jurnal_page" class="nav-item nav-link active text-light"
-              >Jurnal</a
-            >
-            {% else %}
-            <a href="jurnal_page" class="nav-item nav-link text-light"
-              >Jurnal</a
-            >
-            {% endif %}
-
-            <!-- Buku -->
-            {% if current_tab == 'buku' %}
-            <a href="/buku" class="nav-item nav-link active text-light">Buku</a>
-            {% else %}
-            <a href="/buku" class="nav-item nav-link text-light">Buku</a>
-            {% endif %}
-
-            <!-- Riwayat -->
-            {% if current_tab == 'riwayat' %}
-            <a href="/riwayat" class="nav-item nav-link active text-light"
-              >Riwayat</a
-            >
-            {% else %}
-            <a href="/riwayat" class="nav-item nav-link text-light">Riwayat</a>
-            {% endif %}
-          </div>
-        </div>
-        {% if current_user %}
-        <li>
-          <a href="/profil" class="btn btn-secondary">Profile</a>
-        </li>
-        <li>
-            <a href="{% url 'logoutPage' %}" class="btn btn-danger">Logout</a>
+      <span class="navbar-toggler-icon" style="color: white; filter: invert(1);"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mx-auto">
+        <!-- Beranda -->
+        {% if current_tab == 'beranda' %}
+        <li class="nav-item">
+          <a href="/beranda" class="nav-link active text-light">Beranda</a>
         </li>
         {% else %}
-        <li>
-          <a href="/login">
-            <button type="button" class="btn btn-primary">Login</button>
-          </a>
+        <li class="nav-item">
+          <a href="/beranda" class="nav-link text-light">Beranda</a>
         </li>
         {% endif %}
-      </div>
-    </nav>
+
+        <!-- Jurnal -->
+        {% if current_tab == 'jurnal_page' %}
+        <li class="nav-item">
+          <a href="jurnal_page" class="nav-link active text-light">Jurnal</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a href="jurnal_page" class="nav-link text-light">Jurnal</a>
+        </li>
+        {% endif %}
+
+        <!-- Buku -->
+        {% if current_tab == 'buku' %}
+        <li class="nav-item">
+          <a href="/buku" class="nav-link active text-light">Buku</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a href="/buku" class="nav-link text-light">Buku</a>
+        </li>
+        {% endif %}
+
+        <!-- Riwayat -->
+        {% if current_tab == 'riwayat' %}
+        <li class="nav-item">
+          <a href="/riwayat" class="nav-link active text-light">Riwayat</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a href="/riwayat" class="nav-link text-light">Riwayat</a>
+        </li>
+        {% endif %}
+      </ul>
+      <ul class="navbar-nav">
+        {% if current_user %}
+        <li class="nav-item">
+          <a href="/profil" class="btn btn-secondary me-2">Profile</a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'logoutPage' %}" class="btn btn-danger">Logout</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a href="/login" class="btn btn-primary">Login</a>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+
 
     {% block content %} {% endblock %}
   </body>
