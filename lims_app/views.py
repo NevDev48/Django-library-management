@@ -363,18 +363,29 @@ def buku(request):
     # Ambil reader yang sedang login
     reader_instance = get_object_or_404(reader, reference_id=request.session.get('reference_id'))
 
+    # Ambil query pencarian dari parameter GET
+    query = request.GET.get('query_buku', '').strip()
+
     # Cari buku yang sedang dipinjam oleh siapapun dan belum dikembalikan
     borrowed_books = BorrowHistory.objects.filter(is_returned=False).values_list('book', flat=True)
 
     # Buku yang tersedia adalah buku yang tidak ada di daftar borrowed_books
     available_books = Book_lib.objects.exclude(id__in=borrowed_books)
 
+    # Jika ada query pencarian, filter buku berdasarkan judul
+    if query:
+        available_books = available_books.filter(Q(title__icontains=query))
+
     # Pagination
     page_number = request.GET.get('page', 1)  # Ambil nomor halaman dari parameter URL
     paginator = Paginator(available_books, 6)  # 6 buku per halaman
     page_obj = paginator.get_page(page_number)
 
-    return render(request, "page/buku.html", {'current_tab': 'buku', 'books': page_obj})
+    return render(request, "page/buku.html", {
+        'current_tab': 'buku',
+        'books': page_obj,
+        'query_buku': query
+    })
 
 
 def pinjam_buku(request, book_id):

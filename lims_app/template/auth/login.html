@@ -61,6 +61,13 @@
                 <div class="d-flex justify-content-center">
                     <h3 id="form-title">LOGIN ADMIN</h3>
                 </div>
+                {% if messages %}
+                    <div id="messages">
+                        {% for message in messages %}
+                            <div>{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
                 <div class="d-flex justify-content-center form_container">
                     <form method="POST" action="">
                         {% csrf_token %}

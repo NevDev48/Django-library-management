@@ -15,11 +15,10 @@
                 <h5 class="card-title">Judul: {{ item.book.title }}</h5>
                 <p class="card-text">Penulis: {{ item.book.author }}</p>
                 <p class="card-text">Tanggal Pinjam: {{ item.borrowed_at|date:"d M Y" }}</p>
-                <p class="card-text text-center fw-bold text-danger">DIKEMBALIKAN MAKSIMAL 30 HARI!</p>
                 {% if not item.is_returned %}
-                    <a href="{% url 'kembalikan_buku' item.id %}" class=""></a>
+                <p class="card-text text-center fw-bold text-danger">DIKEMBALIKAN MAKSIMAL 30 HARI!</p>
                 {% else %}
-                    <p class="text-success">Buku sudah dikembalikan</p>
+                    <p class="text-success text-center fw-bold">BUKU SUDAH DIKEMBALIKAN</p>
                 {% endif %}
             </div>
         </div>
