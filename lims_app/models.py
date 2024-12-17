@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.hashers import make_password
+from datetime import timedelta
+from django.utils.timezone import now
 
 # Create your models here.
 
@@ -37,6 +39,20 @@ class BorrowHistory(models.Model):
 
     def __str__(self):
         return f"{self.reader.reader_name} - {self.book.title} - {self.borrowed_at}"
+    
+    @property
+    def return_date(self):
+        # Tanggal pengembalian adalah 30 hari sejak tanggal pinjam
+        return self.borrowed_at + timedelta(days=30)
+
+    @property
+    def days_left(self):
+        # Hitung jumlah hari tersisa hingga batas pengembalian
+        if self.is_returned:
+            return 0
+        delta = (self.return_date - now()).days
+        return max(delta, 0)
+
 
 class jurnal(models.Model):
     def __str__(self):

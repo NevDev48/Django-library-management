@@ -8,6 +8,7 @@ from django.shortcuts import redirect
 from .models import BorrowHistory, Category, ContactUs, reader, Book_lib, jurnal
 from django.db.models import Q
 from django.core.paginator import Paginator
+from django.utils import timezone
 
 
 #VIEWS ADMIN
@@ -256,8 +257,11 @@ def delete_jurnal(request, jurnal_id):
 
 @login_required(login_url='loginAuthPage')
 def returns(request):
-    borrowed_books = BorrowHistory.objects.filter(is_returned=False)  # Hanya buku yang belum dikembalikan
-    return render(request, 'return.html', {'current_tab': 'returns', 'borrowed_books': borrowed_books})
+    borrowed_books = BorrowHistory.objects.filter(is_returned=False)
+    return render(request, 'return.html', {
+        'current_tab': 'returns',
+        'borrowed_books': borrowed_books
+    })
 
 @login_required(login_url='loginAuthPage')
 def kembalikan_buku_admin(request, borrow_id):
@@ -303,7 +307,7 @@ def loginPage(request):
             else:
                 messages.error(request, 'Password salah. Silakan coba lagi.')
         except reader.DoesNotExist:
-            messages.error(request, 'Reference ID tidak ditemukan.')
+            messages.error(request, 'NIM tidak ditemukan.')
 
     return render(request, "page/login.html")
 
@@ -402,8 +406,8 @@ def pinjam_buku(request, book_id):
 
     reader_instance = get_object_or_404(reader, reference_id=request.session.get('reference_id'))
 
-    # Catat riwayat peminjaman
-    BorrowHistory.objects.create(reader=reader_instance, book=book)
+    # Catat riwayat peminjaman dengan waktu lokal
+    BorrowHistory.objects.create(reader=reader_instance, book=book, borrowed_at=timezone.now())
 
     messages.success(request, f"Buku '{book.title}' berhasil dipinjam.")
     return redirect('buku')
@@ -435,9 +439,14 @@ def riwayat(request):
         return redirect('login')
 
     reader_instance = get_object_or_404(reader, reference_id=request.session.get('reference_id'))
-    riwayat_buku = BorrowHistory.objects.filter(reader=reader_instance)
+    
+    # Urutkan berdasarkan tanggal peminjaman terbaru
+    riwayat_buku = BorrowHistory.objects.filter(reader=reader_instance).order_by('-borrowed_at')
 
-    return render(request, "page/riwayat.html", {'current_tab': 'riwayat', 'riwayat_buku': riwayat_buku})
+    return render(request, "page/riwayat.html", {
+        'current_tab': 'riwayat',
+        'riwayat_buku': riwayat_buku
+    })
 
 def profil(request):
     reference_id = request.session.get('reference_id', None)

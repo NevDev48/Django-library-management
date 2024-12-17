@@ -11,13 +11,15 @@
 </div>
 
 <div class="container-fluid d-flex justify-content-center align-items-center mt-5">
-    <div class="col-md-6">
+    <div class="col-md-7">
         <table class="table table-striped">
             <thead>
                 <tr>
                     <th>Gambar Buku</th>
                     <th>Judul</th>
                     <th>Tanggal Pinjam</th>
+                    <th>Tanggal Pengembalian</th>
+                    <th>Sisa Hari</th>
                     <th>ID Pengunjung</th>
                     <th>Actions</th>
                 </tr>
@@ -33,7 +35,15 @@
                         {% endif %}
                     </td>
                     <td>{{ borrow.book.title }}</td>
-                    <td>{{ borrow.borrowed_at|date:"d M Y H:i" }}</td>
+                    <td>{{ borrow.borrowed_at|date:"d M Y" }}</td>
+                    <td>{{ borrow.return_date|date:"d M Y" }}</td>
+                    <td>
+                        {% if borrow.days_left > 0 %}
+                        <span class="text-warning">{{ borrow.days_left }} hari lagi</span>
+                        {% else %}
+                        <span class="text-danger">Terlambat!</span>
+                        {% endif %}
+                    </td>
                     <td>{{ borrow.reader.id }}</td>
                     <td>
                         <a href="{% url 'kembalikan_buku_admin' borrow.id %}" onclick="return bookReturnedAlert();">
@@ -42,7 +52,7 @@
                     </td>
                 </tr>
                 {% endfor %}
-            </tbody>
+            </tbody>            
         </table>
     </div>
 </div>
